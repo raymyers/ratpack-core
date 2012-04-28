@@ -1,4 +1,6 @@
 package com.bleedingwolf.ratpack
+import javax.servlet.http.HttpServletResponse;
+
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
 
@@ -49,5 +51,20 @@ public class RatpackRequestDelegate {
         }
         new JSONObject(o).toString()
     }
+	
+	String redirect(String uri) {
+		response.status = HttpServletResponse.SC_MOVED_PERMANENTLY
+		setHeader("Location",uri)
+		"""
+		<html>
+			<head>
+				<title>Moved</title>
+			</head>
+			<body>
+				<h1>Moved</h1>
+				<p>This page has moved to <a href="${uri}">${uri}</a>.</p>
+			</body>
+		</html>"""
+	}
 
 }
